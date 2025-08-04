@@ -20,6 +20,27 @@ const Table = ({ data, title, selectedCells, onCellSelectionChange, onAddRow, on
     const [isDraggingSelection, setIsDraggingSelection] = useState(false);
     const [dragStartCell, setDragStartCell] = useState(null);
 
+    // Edit mode state
+    const [editingCell, setEditingCell] = useState(null);
+
+    // Focus cell when entering edit mode
+    useEffect(() => {
+        if (editingCell) {
+            const [rowIndex, cellIndex] = editingCell.split(",").map(Number);
+            const cellElement = document.querySelector(`[data-row="${rowIndex}"][data-col="${cellIndex}"] .cell-content`);
+            if (cellElement) {
+                cellElement.focus();
+                // Place cursor at the end of the text
+                const range = document.createRange();
+                const selection = window.getSelection();
+                range.selectNodeContents(cellElement);
+                range.collapse(false);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        }
+    }, [editingCell]);
+
     // Cell selection handler
     const handleCellClick = (rowIndex, cellIndex, event) => {
         console.log("handleCellClick called:", { rowIndex, cellIndex, shiftKey: event.shiftKey, isDraggingSelection });
@@ -71,16 +92,22 @@ const Table = ({ data, title, selectedCells, onCellSelectionChange, onAddRow, on
         setLastSelectedCell(cellKey);
     };
 
+    // Double-click handler to enter edit mode
+    const handleCellDoubleClick = (rowIndex, cellIndex) => {
+        setEditingCell(`${rowIndex},${cellIndex}`);
+    };
+
     // Handle content change in editable cell
     const handleContentChange = (rowIndex, cellIndex, newContent) => {
         const cell = data[rowIndex][cellIndex];
         cell.content.text = newContent;
     };
 
-    // Handle blur to save changes
+    // Handle blur to save changes and exit edit mode
     const handleCellBlur = (rowIndex, cellIndex, event) => {
         const newContent = event.target.textContent;
         handleContentChange(rowIndex, cellIndex, newContent);
+        setEditingCell(null);
     };
 
     // Handle key press in editable cell
@@ -94,9 +121,10 @@ const Table = ({ data, title, selectedCells, onCellSelectionChange, onAddRow, on
             // Don't prevent default - let it create a new line
         } else if (event.key === "Escape") {
             event.preventDefault();
-            // Restore original content
+            // Restore original content and exit edit mode
             const cell = data[rowIndex][cellIndex];
             event.target.textContent = cell.content.text;
+            setEditingCell(null);
             event.target.blur();
         }
     };
@@ -120,6 +148,11 @@ const Table = ({ data, title, selectedCells, onCellSelectionChange, onAddRow, on
             console.log(`Cell ${cellKey} is selected`);
         }
         return isSelected;
+    };
+
+    // Helper function to check if a cell is in edit mode
+    const isCellEditing = (rowIndex, cellIndex) => {
+        return editingCell === `${rowIndex},${cellIndex}`;
     };
 
     // Helper function to get all cells that should be selected when accounting for merged cells
@@ -300,6 +333,8 @@ const Table = ({ data, title, selectedCells, onCellSelectionChange, onAddRow, on
                                     {row.map((cell, cellIndex) => (
                                         <td
                                             key={cellIndex}
+                                            data-row={rowIndex}
+                                            data-col={cellIndex}
                                             className={`px-6 py-4 border-r border-gray-200 relative group cursor-pointer select-none ${!cell.mergeInfo.visible ? "hidden" : ""} ${rowIndex === 0 ? "text-sm font-semibold text-gray-700 uppercase tracking-wider" : "text-sm text-gray-900"} ${
                                                 isCellSelected(rowIndex, cellIndex) ? "!bg-blue-100 !border-2 !border-blue-500 !ring-4 !ring-blue-500 !ring-opacity-100 !z-10 !relative !border-solid" : ""
                                             }`}
@@ -320,16 +355,17 @@ const Table = ({ data, title, selectedCells, onCellSelectionChange, onAddRow, on
                                                     : {}
                                             }
                                             onClick={(e) => handleCellClick(rowIndex, cellIndex, e)}
+                                            onDoubleClick={() => handleCellDoubleClick(rowIndex, cellIndex)}
                                             onMouseDown={(e) => handleMouseDown(rowIndex, cellIndex, e)}
                                             onMouseEnter={(e) => handleMouseEnter(rowIndex, cellIndex, e)}
                                         >
                                             <div
-                                                contentEditable
+                                                className={`cell-content outline-none rounded px-1 -mx-1 whitespace-pre-wrap ${isCellEditing(rowIndex, cellIndex) ? "focus:bg-blue-50 focus:ring-1 focus:ring-blue-300" : "cursor-pointer"}`}
+                                                contentEditable={isCellEditing(rowIndex, cellIndex)}
                                                 suppressContentEditableWarning={true}
                                                 onBlur={(e) => handleCellBlur(rowIndex, cellIndex, e)}
                                                 onKeyDown={(e) => handleCellKeyDown(rowIndex, cellIndex, e)}
                                                 onPaste={handleCellPaste}
-                                                className="outline-none focus:bg-blue-50 focus:ring-1 focus:ring-blue-300 rounded px-1 -mx-1 whitespace-pre-wrap"
                                                 style={{
                                                     fontSize: rowIndex === 0 ? "0.875rem" : "0.875rem",
                                                     fontWeight: rowIndex === 0 ? "600" : "400",

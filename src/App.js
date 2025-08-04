@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "./components/Table";
 import OptionsView from "./components/OptionsView";
 import DataViewer from "./components/DataViewer";
@@ -23,6 +23,21 @@ function App() {
 
     // Cell selection state
     const [selectedCells, setSelectedCells] = useState([]);
+
+    // Handle Escape key to clear selection
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === "Escape") {
+                setSelectedCells([]);
+            }
+        };
+
+        document.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, []);
 
     const handleAddRow = () => {
         const newRow = createEmptyRow(data[0].length); // Create empty cells for new row
