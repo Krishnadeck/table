@@ -1,0 +1,98 @@
+{
+    "nodes": [
+        [
+            {
+                "content": { "text": "a1" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            },
+            {
+                "content": { "text": "b1" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            },
+            {
+                "content": { "text": "c1" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            },
+            {
+                "content": { "text": "d1" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            }
+        ],
+        [
+            {
+                "content": { "text": "a2" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            },
+            {
+                "content": { "text": "b2" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            },
+            {
+                "content": { "text": "c2" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            },
+            {
+                "content": { "text": "d2" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            }
+        ],
+        [
+            {
+                "content": { "text": "a3" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            },
+            {
+                "content": { "text": "b3" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            },
+            {
+                "content": { "text": "c3" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            },
+            {
+                "content": { "text": "d3" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            }
+        ],
+        [
+            {
+                "content": { "text": "a4" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            },
+            {
+                "content": { "text": "b4" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            },
+            {
+                "content": { "text": "c4" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            },
+            {
+                "content": { "text": "d4" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            }
+        ],
+        [
+            {
+                "content": { "text": "a5" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            },
+            {
+                "content": { "text": "b5" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            },
+            {
+                "content": { "text": "c5" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            },
+            {
+                "content": { "text": "d5" },
+                "mergeInfo": { "visible": true, "rowSpan": 1, "colSpan": 1 }
+            }
+        ]
+    ],
+    "properties": {
+        "style": "type1",
+        "name": "table - text"
+    }
+}
